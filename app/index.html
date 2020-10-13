@@ -1,10 +1,17 @@
 <!doctype html>
 <html>
   <body>
-    The answer is:
+    Filename: <input id="filename" type="text"/><br/>
+    Inferred MIME type: <span id="mime"></span>
     <script>
-      // Demonstrate nodeIntegration with packaged dependency
-      document.write(require('the-answer'));
+      // Demonstrate nodeIntegration with packaged dependency.
+      // Note 'mime-types' package itself depends on 'mime-db' package.
+      const mime = require('mime-types');
+      const filenameEl = document.getElementById("filename");
+      const mimeEl = document.getElementById('mime');
+      filenameEl.oninput = () => {
+        mimeEl.innerText = mime.lookup(filenameEl.value) || "unknown";
+      }
     </script>
   </body>
 </html>
