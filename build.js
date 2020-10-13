@@ -1,6 +1,13 @@
 #!/usr/bin/env node
 const packager = require("electron-packager");
 
+function ignore(path) {
+  if (path === "") return false;
+  if (path.startsWith("/node_modules")) return false;
+  if (path.startsWith("/app")) return false;
+  return true;
+}
+
 (async () => {
   const appPaths = await packager({
     // The default approach in Electron world seems to be to mix source files for distribution (e.g. main.js)
@@ -12,11 +19,9 @@ const packager = require("electron-packager");
     // Instead, we use `ignore` with a function that turns it into a whitelist.
     dir: '.',
     ignore: path => {
-      console.log("Ignore path?", path);
-      if (path === "") return false;
-      if (path.startsWith("/node_modules")) return false;
-      if (path.startsWith("/app")) return false;
-      return true; // whitelist
+      const res = ignore(path);
+      console.log(res ? "Ignoring" : "Not ignoring", path);
+      return res;
     },
     out: 'build',
     name: 'MyElectronApp',
