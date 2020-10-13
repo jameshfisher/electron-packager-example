@@ -2,6 +2,7 @@
   "name": "electron-packager-quickstart",
   "version": "1.0.0",
   "main": "app/main.js",
+  "foo": "bar",
   "scripts": {
     "start": "electron .",
     "build": "node build.js"

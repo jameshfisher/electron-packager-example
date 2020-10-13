@@ -3,6 +3,7 @@ const packager = require("electron-packager");
 
 function ignore(path) {
   if (path === "") return false;
+  if (path === "/package.json") return false;
   if (path.startsWith("/node_modules")) return false;
   if (path.startsWith("/app")) return false;
   return true;
@@ -25,7 +26,17 @@ function ignore(path) {
     },
     out: 'build',
     name: 'MyElectronApp',
-    overwrite: true
+    overwrite: true,
+    prune: true,
+    afterExtract: (buildPath, electronVersion, platform, arch, callback) => {
+      console.log("afterExtract", buildPath, electronVersion, platform, arch, callback);
+    },
+    afterPrune: (buildPath, electronVersion, platform, arch, callback) => {
+      console.log("afterPrune", buildPath, electronVersion, platform, arch, callback);
+    },
+    afterCopy: (buildPath, electronVersion, platform, arch, callback) => {
+      console.log("afterCopy", buildPath, electronVersion, platform, arch, callback);
+    }
   });
   console.log(`Electron app bundles created: ${appPaths.join("\n")}`);
 })();
